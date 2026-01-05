@@ -1,501 +1,79 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我尊重各族的文化</title>
-
-<style>
-@font-face{
-  font-family: "MixFont","KaiTi","Kaiti SC","STKaiti","DFKai-SB", serif;
-  src: url("../fonts/Azim-Light.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  unicode-range: U+0000-024F, U+2000-206F, U+20A0-20CF;
-  font-display: swap; /* 建议加，避免加载时空白 */
-}
-
-@font-face{
-  font-family: "MixFont","KaiTi","Kaiti SC","STKaiti","DFKai-SB", serif;
-  src: url("../fonts/HYc1gj.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  unicode-range: U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+FF00-FFEF;
-  font-display: swap; /* 建议加 */
-}
-
-:root{
-  --h2:clamp(30px, 5.2vw, 56px);
-  --c2:#F6F0D7;
-  --c3:#B8DB80;
-  --c5:#7b3f7b; 
-  --tile-w: 96px;
-  --tile-h: 46px;
-  --shadow: 0 2px 8px rgba(0,0,0,.10);
-}
-body{
-  margin:0;
-  padding:clamp(10px, 3vw, 20px);
-  font-family: "MixFont","KaiTi","Kaiti SC","STKaiti","DFKai-SB", serif;
-  font-size:clamp(25px, 5vw, 30px);
-  line-height:1.45;
-  font-weight:bold;
-  background: linear-gradient(180deg, var(--c2), #ffffff 55%, var(--c3));
-}
-
-.cornerTag{
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 10001;
-  pointer-events: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.cornerTag img{
-  height: 18px;
-  width: auto;
-  display: block;
-  flex: 0 0 auto;
-}
-
-.cornerTag > span{
-  font-size: 14px;
-  line-height: 1;
-  color: rgba(0,0,0,.75);
-  white-space: nowrap;
-}
-
-.cornerTag .en{
-  font-size: 12px;
-  display: inline-block;
-  transform: translateY(-0.03em);
-}
-
-.container{
-  max-width:1100px;
-  margin:0 auto;
-}
-
-.section{
-  margin-top: 6px;
-}
-
-#pageTitle{
-  width: min(600px, 100%);
-  margin: 20px auto 0px;
-  text-align: center;
-  font-size: 40px;
-  font-weight: 800;
-  line-height: 2;
-  text-shadow:
-    -2px -2px 0 #fff,  2px -2px 0 #fff,
-    -2px  2px 0 #fff,  2px  2px 0 #fff,
-     0   -2px 0 #fff,  0    2px 0 #fff,
-    -2px  0   0 #fff,  2px  0   0 #fff,
-     0    4px 10px rgba(0,0,0,.18);
-}
-
-.lead{
-  font-size: clamp(18px, 3.8vw, 26px);
-  text-align:center;
-  margin: 8px 0 12px;
-}
-
-/* 选项区 */
-.words{
-  text-align:center;
-  margin:10px 0 0px;
-}
-
-.word, .blank{
-  width: var(--tile-w);
-  height: var(--tile-h);
-  border-radius: 14px;
-  box-sizing: border-box;
-}
-
-.word{
-  display:inline-flex;              /* 让文字居中 */
-  align-items:center;
-  justify-content:center;
-  font-family: "MixFont","KaiTi","Kaiti SC","STKaiti","DFKai-SB", serif;
-  font-size: 20px;
-  background: linear-gradient(180deg, #D4F6FF, #C6E7FF);
-  box-shadow: var(--shadow);
-  margin: 8px 6px 20px;
-  cursor: grab;
-
-  /* 手机防长按菜单/选字，并让 JS 拖拽顺畅 */
-  -webkit-user-select:none;
-  user-select:none;
-  -webkit-touch-callout:none;
-  touch-action: none;
-}
-
-/* 题目整体居中 */
-.questions{
-  width: min(640px, 100%);
-  margin:0 auto;
-  padding: 0 10px;
-}
-
-/* 单题 */
-.question{
-  font-size: 20px;
-  font-family: "MixFont","KaiTi","Kaiti SC","STKaiti","DFKai-SB", serif;
-  font-weight: bold;
-  text-align:left;
-  margin:8px 0;
-  display: flex;
-  align-items: center;    /* 让整行更稳 */
-  flex-wrap: wrap;
-}
-
-/* 答案框 */
-.blank{
-  display:inline-block;
-  width:90px;
-  align-items:center;
-  border:2px dashed #999;
-  border-radius:12px;
-  min-height:clamp(35px, 8vw, 45px);
-  vertical-align:bottom;
-  text-align:center;
-  line-height:45px;
-  margin:0 6px;
-  background:#fff;
-}
-
-.blank.hover{
-  outline: 3px solid rgba(255,165,0,.45);
-  outline-offset: 2px;
-}
-.result{
-  margin-left: 6px;
-}
-.keepTogether{
-  white-space: nowrap;
-}
-
-
-/* 提示文字 */
-#message{
-  font-family: "MixFont","KaiTi","Kaiti SC","STKaiti","DFKai-SB", serif;
-  display:inline-block;
-  text-align:center;
-  margin:8px 0 0px;
-  font-size:28px;
-  color:#ffa500;
-  background:#fff0f5;
-  padding:6px 16px;
-  border-radius:18px;
-}
-#message:empty{ display:none; }
-.message-area{ text-align:center; }
-
-/* ===== 底部按钮（PNG） ===== */
-#controls{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:2px;
-  margin:24px 0 10px;
-  padding: 18px 0 12px;     /* 增加一点高度，让过渡更柔 */
-  background: transparent;
-  position: sticky;
-  bottom: 0;
-  z-index: 50;
-}
-
-#controls::before{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:0;
-  top:-18px; /* 往上延伸，让渐变更自然，不会“一刀切” */
-  background: linear-gradient(
-    180deg,
-    rgba(184,219,128,0),
-    rgba(184,219,128,.88)
-  );
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  pointer-events:none;
-  z-index: 0;
-}
-
-#controls button{
-  position: relative;
-  z-index: 1;
-}
-
-/* 统一做成图片按钮 */
-#controls .img-btn{
-  width: clamp(80px, 22vw, 160px);
-  height: clamp(26px, 7vw, 60px);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  background: transparent no-repeat center / contain;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#controls .img-home{ background-image:url("images/btn_home.png"); }
-#controls .img-restart{ background-image:url("images/btn_restart.png"); }
-#controls .img-btn:active{ transform: scale(0.98); }
-
-.keepTogether{
-  white-space: nowrap;
-}
-
-
-/* 手机自适应 */
-@media (max-width: 650px){
-  :root{
-    --tile-w: 92px;
-    --tile-h: 52px;
-  }
-  .word{ font-size: clamp(20px, 4.6vw, 30px); }
-  .question{ font-size: clamp(18px, 4.2vw, 26px); }
-  .blank{ font-size: clamp(18px, 4.2vw, 26px); }
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我尊重各族文化</title>
+  <link rel="stylesheet" href="css/C18_P74&P75_style.css">
 </head>
 
 <body>
   <div class="cornerTag">
     <img src="images/Delima.png" alt="">
-    <span>一年级道德教育 <span class="en">(KP2027)</span> 第 <span class="en">5</span> 课 第 <span class="en">19</span> 页</span></span>
+    <span>一年级道德教育 <span class="en">(KP2027)</span> 第 <span class="en">18</span> 课 第 <span class="en">74 至 75</span> 页</span>
   </div>
 
-<div class="container">
-  <h2 id="pageTitle">我尊重各族的文化</h2>
+  <div class="topArea">
+    <h2 id="pageTitle">我尊重各族文化</h2>
+    <p class="lead">💫把答案拖进空格里💫</p>
+  </div>
 
-  <div class="section">
-    <p class="lead">💫把正确的词拖进答案框💫</p>
-
-<!-- 选项 -->
+  <!-- 选项 -->
   <div class="words" id="options">
-    <div class="word" draggable="true" id="admire">欣赏</div>
-    <div class="word" draggable="true" id="polite">礼貌</div>
-    <div class="word" draggable="true" id="listen">聆听</div>
-    <div class="word" draggable="true" id="mock">取笑</div>
-    <div class="word" draggable="true" id="bless">祝福</div>
+    <div class="word" draggable="true" id="respect" ondragstart="drag(event)">尊重</div>
+    <div class="word" draggable="true" id="polite" ondragstart="drag(event)">礼貌</div>
+    <div class="word" draggable="true" id="listen" ondragstart="drag(event)">聆听</div>
+    <div class="word" draggable="true" id="mock" ondragstart="drag(event)">取笑</div>
+    <div class="word" draggable="true" id="bless" ondragstart="drag(event)">祝福</div>
   </div>
 
-<!-- 题目区 -->
-      <div class="questions">
-<div class="question">
-  <strong>A</strong>　我不 <span class="blank" data-correct="mock"></span> 各族的传统文化。 </span><span class="result"></span></div>
+  <!-- 题目区 -->
+  <div class="questions">
+    <div class="question"><strong>A</strong>　我
+      <span class="blank" ondrop="drop(event,'respect')" ondragover="allowDrop(event)"></span>
+      各族的传统习俗。 <span class="result"></span>
+    </div>
 
-        <div class="question"><strong>B</strong>　我会 <span class="blank" data-correct="polite"></span> 评价各族的传统美食。 <span class="result"></span></div>
+    <div class="question"><strong>B</strong>　我不
+      <span class="blank" ondrop="drop(event,'mock')" ondragover="allowDrop(event)"></span>
+      各族的传统文化。 <span class="result"></span>
+    </div>
 
-        <div class="question"><strong>C</strong>　我学习 <span class="blank" data-correct="admire"></span> 各族的习俗与传统。 <span class="result"></span></div>
+    <div class="question"><strong>C</strong>　我为各族同学送上节庆
+      <span class="blank" ondrop="drop(event,'bless')" ondragover="allowDrop(event)"></span>。<span class="result"></span>
+    </div>
 
-        <div class="question"><strong>D</strong>　我会 <span class="blank" data-correct="listen"></span> 各族同学分享文化故事。 <span class="result"></span></div>
+    <div class="question"><strong>D</strong>　我
+      <span class="blank" ondrop="drop(event,'polite')" ondragover="allowDrop(event)"></span>
+      评价各族的传统美食。 <span class="result"></span>
+    </div>
 
-        <div class="question"><strong>E</strong>　节庆时，我为各族同学送上 <span class="blank" data-correct="bless"></span>。 <span class="result"></span></div>
+    <div class="question"><strong>E</strong>　我安静
+      <span class="blank" ondrop="drop(event,'listen')" ondragover="allowDrop(event)"></span>
+      各族的文化故事。 <span class="result"></span>
+    </div>
 
-        <div class="message-area">
-          <p id="message"></p>
-        </div>
-      </div>
-
-      <footer id="controls">
-        <button type="button" id="btnHome" class="img-btn img-home" aria-label="返回"></button>
-        <button type="button" id="btnRestart" class="img-btn img-restart" aria-label="重新开始"></button>
-      </footer>
+      <span class="result"></span>
     </div>
   </div>
 
-<script>
-let correctCount = 0;
+  <div class="message-area">
+    <p id="message"></p>
+  </div>
 
-const msg = document.getElementById("message");
-const optionsWrap = document.getElementById("options");
-const words = Array.from(document.querySelectorAll(".word"));
-const blanks = Array.from(document.querySelectorAll(".blank"));
+<footer id="controls" role="contentinfo">
+  <button type="button" id="btnRestart" class="img-btn" aria-label="重新开始">
+    <img src="images/BTN_RESTART_RED.png" alt="">
+  </button>
 
-function dropLogic(blankEl, draggedEl){
-  if(blankEl.classList.contains("done")) return;
+  <button type="button" id="btnBack" class="img-btn" aria-label="返回">
+    <img src="images/BTN_HOME_RED.png" alt="">
+  </button>
+</footer>
 
-  const correctId = blankEl.dataset.correct || "";
-  const questionDiv = blankEl.closest(".question");
-  const resultSpan = questionDiv && questionDiv.querySelector(".result");
 
-  if(draggedEl.id === correctId){
-    blankEl.textContent = draggedEl.textContent;
-    blankEl.style.border = "2px solid #4CAF50";
-    draggedEl.style.display = "none";
-    if(resultSpan) resultSpan.textContent = "✅";
-    msg.textContent = "";
 
-    blankEl.classList.add("done");
-    correctCount++;
-
-    if(correctCount === 5){
-      msg.textContent = "🎉 完全答对！🌟";
-    }
-  }else{
-    msg.textContent = "🤔 想一想，再回答 🤍";
-  }
-}
-
-/* ===== 电脑端：HTML5 Drag & Drop ===== */
-words.forEach(w=>{
-  w.addEventListener("dragstart", (e)=>{
-    e.dataTransfer.setData("text/plain", w.id);
-  });
-});
-
-blanks.forEach(b=>{
-  b.addEventListener("dragover", (e)=>e.preventDefault());
-  b.addEventListener("dragenter", ()=>b.classList.add("hover"));
-  b.addEventListener("dragleave", ()=>b.classList.remove("hover"));
-  b.addEventListener("drop", (e)=>{
-    e.preventDefault();
-    b.classList.remove("hover");
-    const id = e.dataTransfer.getData("text/plain");
-    const draggedEl = document.getElementById(id);
-    if(draggedEl) dropLogic(b, draggedEl);
-  });
-});
-
-/* ===== 重新开始 / 返回 ===== */
-function resetGame(){
-  blanks.forEach(b=>{
-    b.innerText = "";
-    b.style.border = "2px dashed #999";
-    b.classList.remove("done");
-    b.classList.remove("hover");
-  });
-
-  document.querySelectorAll(".result").forEach(r=>r.textContent="");
-  Array.from(optionsWrap.children).forEach(w=>w.style.display="inline-flex");
-  correctCount = 0;
-  msg.textContent = "";
-}
-function goBack(){ window.history.back(); }
-
-document.getElementById("btnRestart").addEventListener("click", resetGame);
-document.getElementById("btnHome").addEventListener("click", goBack);
-
-/* ===== 手机端：Pointer/Touch 拖拽（覆盖所有手机） ===== */
-(function enableTouchDnD(){
-  // 只要是触控设备（手机/平板），就启用自定义拖拽
-  const isTouchDevice =
-    ("ontouchstart" in window) ||
-    (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
-
-  if(!isTouchDevice) return;
-
-  // 触控端禁用原生 draggable（避免长按触发）
-  words.forEach(w=>{
-    w.draggable = false;
-    w.addEventListener("dragstart", e=>e.preventDefault());
-    w.addEventListener("contextmenu", e=>e.preventDefault());
-  });
-
-  let state = { el:null, ghost:null, ox:0, oy:0, active:false, hoverBlank:null, prevOverflow:"" };
-
-  function pt(e){
-    const t = (e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]);
-    return t ? {x:t.clientX, y:t.clientY} : {x:e.clientX, y:e.clientY};
-  }
-
-  function setHoverBlank(blank){
-    if(state.hoverBlank === blank) return;
-    if(state.hoverBlank) state.hoverBlank.classList.remove("hover");
-    state.hoverBlank = blank;
-    if(state.hoverBlank) state.hoverBlank.classList.add("hover");
-  }
-
-  function start(e, el){
-    const p = pt(e);
-    state.el = el;
-    state.active = true;
-
-    const r = el.getBoundingClientRect();
-    state.ox = p.x - r.left;
-    state.oy = p.y - r.top;
-
-    const g = el.cloneNode(true);
-    g.style.position = "fixed";
-    g.style.left = (p.x - state.ox) + "px";
-    g.style.top  = (p.y - state.oy) + "px";
-    g.style.zIndex = 9999;
-    g.style.opacity = "0.92";
-    g.style.pointerEvents = "none";
-    document.body.appendChild(g);
-    state.ghost = g;
-
-    state.prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-  }
-
-  function move(e){
-    if(!state.active || !state.ghost) return;
-    const p = pt(e);
-
-    state.ghost.style.left = (p.x - state.ox) + "px";
-    state.ghost.style.top  = (p.y - state.oy) + "px";
-
-    const target = document.elementFromPoint(p.x, p.y);
-    const blank = target && target.closest ? target.closest(".blank") : null;
-    setHoverBlank(blank);
-  }
-
-  function end(e){
-    if(!state.active) return;
-    const p = pt(e);
-
-    const target = document.elementFromPoint(p.x, p.y);
-    const blank = target && target.closest ? target.closest(".blank") : null;
-
-    if(blank && state.el) dropLogic(blank, state.el);
-
-    if(state.ghost) state.ghost.remove();
-    setHoverBlank(null);
-
-    document.body.style.overflow = state.prevOverflow || "";
-    state = { el:null, ghost:null, ox:0, oy:0, active:false, hoverBlank:null, prevOverflow:"" };
-  }
-
-  const supportsPointer = "PointerEvent" in window;
-
-  words.forEach(el=>{
-    if(supportsPointer){
-      el.addEventListener("pointerdown", (e)=>{
-        if(e.pointerType !== "touch" && e.pointerType !== "pen") return;
-        e.preventDefault();
-        el.setPointerCapture && el.setPointerCapture(e.pointerId);
-        start(e, el);
-      }, {passive:false});
-
-      el.addEventListener("pointermove", (e)=>{
-        if(e.pointerType !== "touch" && e.pointerType !== "pen") return;
-        if(!state.active) return;
-        e.preventDefault();
-        move(e);
-      }, {passive:false});
-
-      el.addEventListener("pointerup", (e)=>{
-        if(e.pointerType !== "touch" && e.pointerType !== "pen") return;
-        e.preventDefault();
-        end(e);
-      }, {passive:false});
-
-      el.addEventListener("pointercancel", end, {passive:false});
-    }else{
-      el.addEventListener("touchstart", (e)=>{ e.preventDefault(); start(e, el); }, {passive:false});
-      el.addEventListener("touchmove",  (e)=>{ if(!state.active) return; e.preventDefault(); move(e); }, {passive:false});
-      el.addEventListener("touchend",   (e)=>{ e.preventDefault(); end(e); }, {passive:false});
-      el.addEventListener("touchcancel", end, {passive:false});
-    }
-  });
-})();
-</script>
+  <!-- ✅ 连结 JS（放在 body 最下面） -->
+  <script src="js/C18_P74&P75_script.js"></script>
 </body>
 </html>

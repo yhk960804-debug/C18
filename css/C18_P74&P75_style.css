@@ -68,11 +68,12 @@ html, body{
   --accent2:#7aa7e8;    /* 辅色：蓝 */
   --accent3:#ffb74d;    /* 强调：橙 */
 }
+.question{ font-size: var(--ui-fs); }
+.word{ font-size: var(--ui-fs); }
 .word{ border-color: var(--accent); }
 .blank.hover{ outline-color: color-mix(in srgb, var(--accent3) 70%, transparent); }
 
 .word{ 
-  font-size: var(--ui-fs); 
   box-shadow: 0 6px 14px rgba(0,0,0,.08);
   border-width: 2px;
   border-radius: 18px;
@@ -148,7 +149,7 @@ body::before{
   width: min(800px, 100%);
   margin: -15px auto 0px;
   text-align: center;
-  font-size: clamp(30px, 5.2vw, 56px);
+  font-size: clamp(30px, 5vw, 45px);
   font-weight: 800;
   line-height: 1.1;
   padding-bottom: 10px;
@@ -203,13 +204,14 @@ body::before{
 .questions{ 
   width: min(550px, 100%);
   margin: 10px auto 0px;
-  padding: 5px 0px 0px 0px;
+  padding: 5px 0px 0px 40px;
   border-radius: 15px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   box-shadow: 0 14px 34px rgba(0,0,0,.10);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  align-content: center;
 }
 .question{
   font-family: "MixFont","KaiTi","Kaiti SC","STKaiti","DFKai-SB", serif;
@@ -341,7 +343,6 @@ body::before{
 }
 
 #controls .img-btn{
-  position: relative;
   z-index: 1;
   width: clamp(40px, 12vw, 60px);
   height: clamp(60px, 40vw, 80px);
@@ -361,21 +362,13 @@ body::before{
 
 @media (max-width: 650px) and (orientation: portrait) {
   :root{
-    /* 比你原本手机端的 24~34px 更小，避免句子掉行 */
-    --ui-fs: clamp(17px, 4.2vw, 24px);
+    --ui-fs: clamp(18px, 4.1vw, 24px);
   }
 
   /* 同时略缩小空格宽度，给文字多一点横向空间（可选但很有效） */
   .blank{
     width: 62px;
     margin: 0 4px;
-  }
-}
-
-@media (max-width: 650px) and (orientation: portrait){
-  :root{
-    /* 竖屏：统一 questions/options/blank 字号（你可微调这个范围） */
-    --ui-fs: clamp(18px, 4.1vw, 24px);
   }
 
   /* 让边框/虚线左右对齐，不要左边空、右边挤 */
@@ -397,11 +390,13 @@ body::before{
   body{ padding:0 !important; }
 
   :root{
+    --ui-fs: clamp(16px, 2.6vh, 22px);
     --ls-fs: clamp(16px, 2.6vh, 22px);         /* 横屏统一字号：option/question/blank 同倍率 */
     --optColW: clamp(120px, 18vw, 180px);      /* 左侧选项栏宽度：调宽度就改这里 */
     --rowH: clamp(40px, 10vh, 56px);           /* 每一行（A/B/C/D 与四个选项）的统一高度 */
     --qW: clamp(320px, 52vw, 420px);  /* questions 的宽度（横屏可自动适配） */
     --msgGap: 12px;                  /* message 与 questions 的间距 */
+    --card-w: min(550px, 92vw); /* 你 questions 的目标宽度 */
   }
 
   #fitRoot{
@@ -430,9 +425,11 @@ body::before{
   }
 
   .topArea{
-    grid-area: top !important;
-    padding-top: 46px !important;   /* 避开 cornerTag */
-    text-align:center !important;
+    width: var(--card-w);
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
   }
 
   /* cornerTag：横屏固定在顶部，不挡标题 */
@@ -457,6 +454,13 @@ body::before{
     margin: 0 0 4px !important;
     font-size: clamp(16px, 2.8vh, 24px) !important;
   }
+  #pageTitle,
+  .lead{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
 
   /* —— 左侧：选项（四行=四题对齐）—— */
   .words{
@@ -475,7 +479,7 @@ body::before{
     min-height: 0 !important;
     box-sizing:border-box !important;
 
-    font-size: var(--ls-fs) !important;
+    font-size: var(--ui-fs) !important;
     line-height: 1 !important;
 
     display:flex !important;
@@ -499,6 +503,8 @@ body::before{
     grid-area: qs !important;
     width: 350px !important;
     margin: 0px -10px !important;
+    position: relative;
+    z-index: 1;
     padding: 10px 30px 0 14px !important;
     box-sizing:border-box !important;
     overflow: visible !important;       /* 允许 message 出现在框外右侧 */
@@ -513,7 +519,7 @@ body::before{
     display:flex !important;
     align-items:center !important;
 
-    font-size: var(--ls-fs) !important;
+    font-size: var(--ui-fs) !important;
     white-space: nowrap !important;
     padding: 0 10px !important;                  /* 给文字留边距 */
     position: relative !important;
@@ -563,12 +569,14 @@ body::before{
   max-width: clamp(160px, 30vw, 260px) !important;  /* 避免太大溢出屏幕 */
   white-space: nowrap !important;
 
-  font-size: clamp(14px, 2.4vh, 20px) !important;
+  font-size: var(--ui-fs) !important;
   padding: 6px 14px !important;
 }
   /* —— buttons：独立一行在最底部，保证不被吃掉 —— */
   #controls{
     position: fixed !important;
+    padding-top: 6px;                      /* ✅ 原本可能 12px/18px，改小 */
+    padding-bottom: calc(6px + env(safe-area-inset-bottom));
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
@@ -578,8 +586,7 @@ body::before{
     justify-content: center !important;
     align-items: center !important;
     gap: clamp(24px, 10vw, 120px) !important;
-
-    padding: 6px 12px calc(5px + env(safe-area-inset-bottom)) 12px;
+    padding: 6px 1px calc(5px + env(safe-area-inset-bottom)) 12px;
     margin: 0 !important;
     background: transparent !important;
   }
@@ -597,6 +604,12 @@ body::before{
     -webkit-backdrop-filter: blur(4px) !important;
     pointer-events:none !important;
     z-index:0 !important;
+    top: auto;          /* ✅ 不往上延伸 */
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 72px;       /* ✅ ribbon 高度（你可改 60~80） *
   }
 
   #controls .img-btn{
@@ -604,5 +617,79 @@ body::before{
     z-index: 1 !important;
     width:  clamp(30px, 8svh, 40px) !important;
     height: clamp(20px, 8svh, 40px) !important;
+  }
+}
+/* ✅ 全端：交换 Home / Restart 左右位置 */
+#controls{ display:flex; }   /* 确保是 flex */
+#btnBack{ order: 1; }        /* Home 放到后面 */
+#btnRestart{ order: 
+}
+  /* ✅ 只限电脑端：按钮固定在视口底部 */
+@media (hover: hover) and (pointer: fine){
+  #controls{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+
+    padding: 12px 12px 18px;
+    background: transparent;}
+  }
+  #controls::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.88));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  #controls .img-btn{ z-index: 1; }
+ 
+  /* ✅ 关键：给内容区留出按钮高度，避免被盖住 */
+  body{
+    padding-bottom: 140px;  /* 你可按按钮大小调 120~160 */
+  }
+
+/* ✅ 只限电脑端：按钮固定在视口底部 */
+@media (hover: hover) and (pointer: fine){
+  #controls{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+
+    padding: 12px 12px 18px;
+    background: transparent;
+  }
+
+  #controls::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.88));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ✅ 关键：给内容区留出按钮高度，避免被盖住 */
+  body{
+    padding-bottom: 140px;  /* 你可按按钮大小调 120~160 */
   }
 }

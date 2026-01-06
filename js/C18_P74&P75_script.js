@@ -30,7 +30,7 @@ function drop(ev, correctId){
       msg.innerText = "🎉 恭喜答对！🌟";
     }
     }else{
-      msg.innerText = "🤔 想一想，再回答 🤍";
+      msg.innerText = "🤔 想一想，再回答";
     }
 
 }

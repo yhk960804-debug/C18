@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我尊重各族文化</title>
+  <link rel="stylesheet" href="css/C18_P74&P75_style.css">
+</head>
+
+<body>
+  <div class="cornerTag">
+    <img src="images/Delima.png" alt="">
+    <span>一年级道德教育 <span class="en">(KP2027)</span> 第 <span class="en">18</span> 课 第 <span class="en">74 至 75</span> 页</span>
+  </div>
+
+  <div id="fitRoot">
+    <div id="fitContent">
+      <div class="topArea">
+        <h2 id="pageTitle">我尊重各族文化</h2>
+        <p class="lead">💫把答案拖进空格里💫</p>
+  </div>
+
+      <!-- 选项 -->
+      <div class="words" id="options">
+        <div class="word" draggable="true" id="proud" ondragstart="drag(event)">自豪</div>
+        <div class="word" draggable="true" id="admire" ondragstart="drag(event)">欣赏</div>
+        <div class="word" draggable="true" id="respect" ondragstart="drag(event)">尊重</div>
+        <div class="word" draggable="true" id="polite" ondragstart="drag(event)">礼貌</div>
+      </div>
+
+      <!-- 题目区 -->
+      <div class="questions">
+        <div class="question"><strong>A</strong>　我懂得
+          <span class="blank" ondrop="drop(event,'respect')" ondragover="allowDrop(event)"></span>
+          各族的文化。 <span class="result"></span>
+        </div>
+
+        <div class="question"><strong>B</strong>　我
+          <span class="blank" ondrop="drop(event,'polite')" ondragover="allowDrop(event)"></span>
+          评价各族的美食。 <span class="result"></span>
+        </div>
+
+        <div class="question"><strong>C</strong>　我
+          <span class="blank" ondrop="drop(event,'admire')" ondragover="allowDrop(event)"></span>
+          各族的传统舞蹈。 <span class="result"></span>
+        </div>
+
+        <div class="question"><strong>D</strong>　多元文化令我感到
+          <span class="blank" ondrop="drop(event,'proud')" ondragover="allowDrop(event)"></span>。<span class="result"></span>
+        </div>
+    </div>
+
+  <div class="message-area">
+    <p id="message"></p>
+  </div>
+
+
+    <footer id="controls" role="contentinfo">
+      <button type="button" id="btnRestart" class="img-btn" aria-label="重新开始">
+        <img src="images/BTN_RESTART_RED.png" alt="">
+      </button>
+
+      <button type="button" id="btnBack" class="img-btn" aria-label="返回">
+        <img src="images/BTN_HOME_RED.png" alt="">
+      </button>
+    </footer>
+  </div>
+</div>
+
+<script src="js/C18_P74&P75_script.js"></script>
+</body>
+</html>

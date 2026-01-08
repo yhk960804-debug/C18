@@ -110,20 +110,12 @@ body{
   font-size:var(--fs);
   font-weight:bold;
   line-height:1;
-  background: linear-gradient(180deg, var(--bg1), var(--bg2) 55%, var(--bg3));
-}
-
-body::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: .55;
-  background:
-    radial-gradient(circle at 10% 15%, rgba(255,170,200,.25) 0 26px, transparent 27px),
-    radial-gradient(circle at 90% 18%, rgba(120,200,255,.22) 0 28px, transparent 29px),
-    radial-gradient(circle at 18% 85%, rgba(170,255,200,.22) 0 30px, transparent 31px),
-    radial-gradient(circle at 85% 82%, rgba(255,220,120,.20) 0 32px, transparent 33px);
+  background-image:
+    linear-gradient(rgba(255,255,255,.15), rgba(255,255,255,.15)),
+    url("../images/C18_BG.png");
+  background-size: contain;
+  background-position: top;
+  background-repeat: repeat;
 }
 
 @keyframes pop{
@@ -324,7 +316,8 @@ body::before{
 }
 
 #controls::before{
-  content:"";
+  content:none;
+  display:none;
   position:absolute;
   left: 0;
   right: 0;
@@ -335,8 +328,8 @@ body::before{
     rgba(255,255,255,.0), 
     rgba(255,255,255,.88)
 );
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   pointer-events:none;
   z-index:0;
 }
@@ -363,20 +356,13 @@ body::before{
 @media (max-width: 650px) and (orientation: portrait) {
   :root{
     /* 比你原本手机端的 24~34px 更小，避免句子掉行 */
-    --ui-fs: clamp(17px, 4.2vw, 24px);
+    --ui-fs: clamp(18px, 4.1vw, 24px);
   }
 
   /* 同时略缩小空格宽度，给文字多一点横向空间（可选但很有效） */
   .blank{
     width: 62px;
     margin: 0 4px;
-  }
-}
-
-@media (max-width: 650px) and (orientation: portrait){
-  :root{
-    /* 竖屏：统一 questions/options/blank 字号（你可微调这个范围） */
-    --ui-fs: clamp(18px, 4.1vw, 24px);
   }
 
   /* 让边框/虚线左右对齐，不要左边空、右边挤 */
@@ -390,9 +376,20 @@ body::before{
   .question{
     padding: 6px 0;
   }
-
   .result{ right: 8px; }
+  
+  body{
+    background-image:
+      linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.35)),
+      url("../images/C18_BG_Phone.png");  /* ✅ 竖屏专用背景 */
+    background-repeat: repeat;
+    background-position: top;
+    background-size: calc(100%) auto;             /* 或 cover，看你要不要裁切 */
+  }
+
+  body::before{ opacity: 0 !important; }
 }
+
 @media (max-width: 900px) and (orientation: landscape) and (hover: none) and (pointer: coarse){
 
   body{ padding:0 !important; }
@@ -574,7 +571,7 @@ body::before{
     right: 0 !important;
     bottom: 0 !important;
     z-index: 9999 !important;
-
+    
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -582,20 +579,20 @@ body::before{
 
     padding: 6px 12px calc(5px + env(safe-area-inset-bottom)) 12px;
     margin: 0 !important;
-    background: transparent !important;
+    background: transparent !important; 
   }
 
   /* ribbon（你想保留就注释掉这两段；想去掉就保留） */
   #controls::before{
-    content:"" !important;
+    content:none !important;
+    display:none;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none!important;
     position:absolute !important;
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
     top: 0 !important;
-    background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.88)) !important;
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
     pointer-events:none !important;
     z-index:0 !important;
   }

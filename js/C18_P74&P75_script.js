@@ -285,4 +285,5 @@ bindPressSwap(btnRestart, BTN_RESTART_RED, BTN_RESTART_YELLOW);
   // 若字体加载后高度变化，再补一次
   setTimeout(applyFit, 80);
   setTimeout(applyFit, 250);
+
 })();
